@@ -1,0 +1,88 @@
+一、基础部分 
+1.尝试说明 char *s = ”aaa” 和 char s[]=”aaa”的区别
+答：char*s表示s是一个可变指针，允许对其进行修改。即可以指向其他地方。*s“aaa”由于编译器优化，一般会将aaa存放在常量区域内，然后s指针是局部变量，存放在栈中，因此，在函数返回中，允许返回改地址
+ ?chars[]是局部变量，当函数结束，存在栈中的数组内容均被销毁。因此返回s地址是不允许的
+2.如何理解面向对象编程。 
+答：把一组数据结构和处理他们的方法组成对象，把相同行为的对象归纳为类，通过类的封装隐藏内部细节，通过继承实现累的特化/泛化，通过多态实现基于对象类型的动态分派
+3.简述一下 Tcp的三次握手与四次挥手
+答：三次握手
+TCP连接是通过三次握手来连接的。
+第一次握手
+当客户端向服务器发起连接请求时，客户端会发送同步序列标号SYN到服务器，在这里我们设SYN为m，等待服务器确认，这时客户端的状态为SYN_SENT。
+第二次握手
+当服务器收到客户端发送的SYN后，服务器要做的是确认客户端发送过来的SYN，在这里服务器发送确认包ACK，这里的ACK为m+1，意思是说“我收到了你发送的SYN了”，同时，服务器也会向客户端发送一个SYN包，这里我们设SYN为n。这时服务器的状态为SYN_RECV。
+一句话，服务器端发送SYN和ACK两个包。
+第三次握手
+客户端收到服务器发送的SYN和ACK包后，需向服务器发送确认包ACK，“我也收到你发送的SYN了，我这就给你发个确认过去，然后我们即能合体了”，这里的ACK为n+1，发送完毕后，客户端和服务器的状态为ESTABLISH，即TCP连接成功。
+在三次握手中，客户端和服务器端都发送两个包SYN和ACK，只不过服务器端的两个包是一次性发过来的，客户端的两个包是分两次发送的。
+  四次挥手
+当A端和B端要断开连接时，需要四次握手，这里称为四次挥手。
+断开连接请求可以由客户端发出，也可以由服务器端发出，在这里我们称A端向B端请求断开连接。
+第一次挥手
+A端向B端请求断开连接时会向B端发送一个带有FIN标记的报文段，这里的FIN是FINish的意思。
+第二次挥手
+B端收到A发送的FIN后，B段现在可能现在还有数据没有传完，所以B端并不会马上向A端发送FIN，而是先发送一个确认序号ACK，意思是说“你发的断开连接请求我收到了，但是我现在还有数据没有发完，请稍等一下呗”。
+第三次挥手
+当B端的事情忙完了，那么此时B端就可以断开连接了，此时B端向A端发送FIN序号，意思是这次可以断开连接了。
+第四次挥手
+A端收到B端发送的FIN后，会向B端发送确认ACK，然后经过两个MSL时长后断开连接。
+4.简述你对OSI七层协议模型和TCP/IP四层模型的理解。
+答：开放式系统互联(OSI，Open?System?Interconnection)，它是非常棒的协议规范 
+1.七层协议从上倒下分别是 
+7?应用层 
+6?表示层 
+5?会话层 
+4传输层 
+3?网络层 
+2?数据链路层 
+1?物理层 
+其中4-7层定义了应用程序的功能，剩下三层主要通过网络的端到端的数据流。OSI七层模型是一个理论模型，更多的则是把它作为分析、评判各种网络技术的依据； 
+TCP/IP是一个计算机通信的一组协议，称它为TCP/IP协议族。在其中还包含了其他的协议(http、telnet、icmp、arp、rarp)，正因为TCP/IP协议很重要，就以它们两个命名。 
+5.64位机下该结构体所占的内存大小是多少？ struct test_t { int a; char b; short c; char d[6]; }; 
+答：6
+6.请问以下代码有问题吗？没有的话输出是什么，有的 话解释其原因。 int main () { int x,a,b = 17; x = scanf("%d",a); printf("%d,%d,%d,%d\n", 2017, a, x, printf("%d\n", b)); return 0; } 
+答：有，第一没有取地址，第二括号中不能有print，前面已经有了
+7.int[3][4]，下列哪些可以表示 a[1][1] 。 *(&a[0][0]+5); *(*(a+1)+1); *(&a[1]+1); *(a[1]+1); 
+答：第一个
+8.下列代码运行结果 int a[]={1,2,3,4}; int *b=a;*b+=2; *(b+2)=2; b++; printf("%d,%d\n",*b,*(b+2)); 
+答：2，4
+9.常见的排序算法有哪些？请尽可能多的用 C 语言 实现。
+答：（1）非线性时间比较类排序：交换类排序（快速排序和冒泡排序）、插入类排序（简单插入排序和希尔排序）、选择类排序（简单选择排序和堆排序）、归并排序（二路归并排序和多路归并排序）；
+（2）线性时间非比较类排序：计数排序、基数排序和桶排序。
+10.使用 C 语言定义一个实现字符串拼接的函数
+答：
+#include <<a class="baidu-highlight" href="https://www.baidu.com/s?wd=stdio.h&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1Y3Pj0drHD3uHT4PH99PHI90ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3EPHf1rHfkPjmz" target="_blank">stdio.h</a>>
+#include<<a class="baidu-highlight" href="https://www.baidu.com/s?wd=conio.h&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1Y3Pj0drHD3uHT4PH99PHI90ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3EPHf1rHfkPjmz" target="_blank">conio.h</a>>
+#include <<a class="baidu-highlight" href="https://www.baidu.com/s?wd=string.h&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1Y3Pj0drHD3uHT4PH99PHI90ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3EPHf1rHfkPjmz" target="_blank">string.h</a>>
+char *my_strcat(char *s1,char *s2)
+{
+while(*(++s1));
+while(*s1++=*s2++);
+return s1;
+}
+int main()
+{
+char s1[50]={"你好，"},s2[50]={"世界！"};
+my_strcat(s1,s2);
+printf("%s",s1);
+getch();
+}
+二、方向题 前端 1.谈谈你对 HTML5、CSS3、ECMAScript6 的理解。 
+答：HTML5：在html5出现之前，人们必须用一个doctype来告诉浏览器自己使用的HTML5是那个版本，一堆非常长的代码，而最新的HTML5只用写一小段，对doctype做了极大的简化，就doctype的内容表现的那样，HTML5算是一个“活的标准”，它会随着技术的发展形成文档，可以不断地向其中增加新的内容，同时也会继续支持原来的内容，浏览器也会支持这些新的内容，同事也会继续支持原来的内容。这样，即使规范改变了，昨天写的页面也能继续使用。
+  css：串样式列表，一种用来为结构化文档（如HTML文档或xml应用）添加样式（字体、间距和颜色）等的计算机语言。即样式化html元素
+  ECMAScript是JAVAScript语言的国际标准，是JAVAScript的下一代标准
+2.说说 cookies、localStorage、sessionStorage 的应 用场景。 
+答：localStorage可以用来统计页面访问次数。
+sessionStorage可以用来统计当前页面元素的点击次数。
+cookie一般存储用户名密码相关信息，一般使用escape转义编码后存储。
+3.如何更好的理解前端模块化开发和组件化开发？ 
+答：组件化就是做一个知乎，把导航栏拆成一个组件，一个一个回答区域拆成一个组件，编辑区是一个组件，页脚是一个组件，等等。。你可以尽情拆分。一个组件包含了html、css、js代码，可以简单理解为页面的一块。
+   模块化就是做一个知乎的编辑区组件，假设要有时间格式化、图片格式处理、视频格式处理、代码格式处理，这样很多个js功能。那么你当然可以在HTML里面引入多个JS script，现在更流行更好的方式，是采用引入的方式。
+4.对比 Ajax 与 Fetch API，都有哪些相同与不同之处？ 
+答：fetch被称为下一代ajax技术，与 Ajax 不同的是，它的 API 不是事件机制，而采用了目前流行的 Promise 方式处理，但目前还不是 W3C 规范，IE\SAFARI还不支持 
+5.尝试说明 JavaScript 事件捕获和事件冒泡的区别。 
+答：1）冒泡型事件：事件按照从最特定的事件目标到最不特定的事件目标(document对象)的顺序触发。（2）捕获型事件(event capturing)：事件从最不精确的对象(document 对象)开始触发，然后到最精确(也可以在窗口级别捕获事件，不过必须由开发人员特别指定)。
+事件捕获阶段：事件从最上一级标签开始往下查找，直到捕获到事件目标(target)。
+事件冒泡阶段：事件从事件目标(target)开始，往上冒泡直到页面的最上一级标签。
+
+
